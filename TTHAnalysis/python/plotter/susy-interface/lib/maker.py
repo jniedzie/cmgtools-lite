@@ -128,6 +128,11 @@ class Maker():
 		if len(filtered)>0:
 			return str(max([int(l[1]) for l in filtered]))
 		return "50000"
+	def getFriendModules(self):
+		if len(self.options.modules)>0: return self.options.modules
+		friendConn = self.getVariable("friendConn")
+		friendFile = self.getVariable("friendFile")
+		return [k for k,v in friendConn.iteritems() if k in friendFile.keys()]
 	def getProcs(self):
 		procs = self.getBkgs() + self.getSigs()
 		if len(self.options.procs)>0: procs = self.options.procs
@@ -241,17 +246,18 @@ class Maker():
 		super = "bsub -q {queue} -J SUSY_{name} "
 		if queue in ["all.q", "long.q", "short.q"]:
 			super = "qsub -q {queue} -N SUSY_{name} "
-                elif queue in ["batch"] and os.path.isdir('/pool/ciencias/'):
-                        super = "qsub -q {queue} -N AWSMUniovi_{name} "
+		elif queue in ["batch"] and os.path.isdir('/pool/ciencias/'):
+			super = "qsub -q {queue} -N AWSMUniovi_{name} "
 		super += "-o {dir}/submitJob_{name}.out -e {dir}/submitJob_{name}.err "
 		super = super.format(queue=queue, name=name, dir=self.logpath)
 		if setHold > -1 and queue in ["all.q", "long.q", "short.q"]:
 			super += " -hold_jid " + str(setHold) + " " 
+		cmd("chmod 755 "+script)
 		jobLine = bash(super + script) 
 		if queue in ["all.q", "long.q", "short.q"]:
 			jobId = int(jobLine.split()[2])
-                elif queue in ["batch"] and os.path.isdir('/pool/ciencias/'):
-                        jobId = int(jobLine.split('.')[0])
+		elif queue in ["batch"] and os.path.isdir('/pool/ciencias/'):
+			jobId = int(jobLine.split('.')[0])
 		else:
 			jobId = int(jobLine.split()[1].strip("<").strip(">"))
 		return jobId
