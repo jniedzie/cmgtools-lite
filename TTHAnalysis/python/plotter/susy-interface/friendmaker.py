@@ -42,7 +42,7 @@ mm.loadNEvtSample()
 
 
 ## loop on modules
-for module in options.modules:
+for module in mm.getFriendModules():
 
 	output = mm.outdir +"/"+ module
 	func.mkdir(output)
