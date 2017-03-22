@@ -42,10 +42,10 @@ SMS_TChiSlepSnuTEx0p95=kreator.makeMCComponent("SMS_TChiSlepSnuTEx0p95","/SMS-TC
 SMS_TChiStauStaux0p5=kreator.makeMCComponent("SMS_TChiStauStaux0p5","/SMS-TChiStauStau_x0p5_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
 SMS_TChiStauStaux0p5ext=kreator.makeMCComponent("SMS_TChiStauStaux0p5ext","/SMS-TChiStauStau_x0p5_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0_ext1-v1/MINIAODSIM","CMS",".*root",1,True)
 
-SMS_TChiZZ2L=kreator.makeMCComponent("SMS_TChiZZ2L","/SMS-TChiZZ_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
-SMS_TChiZZ4L=kreator.makeMCComponent("SMS_TChiZZ4L","/SMS-TChiZZ_ZToLL_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
-SMS_TChiHZ=kreator.makeMCComponent("SMS_TChiHZ","/SMS-TChiHZ_HToWWZZTauTau_2LFilter_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
-SMS_TChiHH=kreator.makeMCComponent("SMS_TChiHH","/SMS-TChiHH_HToWWZZTauTau_HToWWZZTauTau_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v1/MINIAODSIM","CMS",".*root",1,True)
+SMS_TChiZZ2L=kreator.makeMCComponent("SMS_TChiZZ2L","/SMS-TChiZZ_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v2/MINIAODSIM","CMS",".*root",1,True)
+SMS_TChiZZ4L=kreator.makeMCComponent("SMS_TChiZZ4L","/SMS-TChiZZ_ZToLL_ZToLL_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v2/MINIAODSIM","CMS",".*root",1,True)
+SMS_TChiHZ=kreator.makeMCComponent("SMS_TChiHZ","/SMS-TChiHZ_HToWWZZTauTau_2LFilter_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v2/MINIAODSIM","CMS",".*root",1,True)
+SMS_TChiHH=kreator.makeMCComponent("SMS_TChiHH","/SMS-TChiHH_HToWWZZTauTau_HToWWZZTauTau_TuneCUETP8M1_13TeV-madgraphMLM-pythia8/RunIISpring16MiniAODv2-PUSpring16Fast_80X_mcRun2_asymptotic_2016_miniAODv2_v0-v2/MINIAODSIM","CMS",".*root",1,True)
 
 SignalSUSY = [
 SMS_T1bbbb_mGluino1500_mLSP100,
