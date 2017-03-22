@@ -524,7 +524,7 @@ if analysis=='susy':
     elif int(group)==6:
         selectedComponents=[TTJets_DiLepton_ext,TTJets_SingleLeptonFromT_ext,TTJets_SingleLeptonFromTbar_ext,WZTo3LNu_ext]
     elif int(group)==7:
-        selectedComponents=[TToLeptons_tch_powheg,TBarToLeptons_tch_powheg,TBar_tWch,T_tWch]
+        selectedComponents=[TToLeptons_tch_powheg,TBarToLeptons_tch_powheg,TBar_tWch,T_tWch,WJetsToLNu_LO, WJetsToLNu_LO_ext]
 
     elif int(group)==100:
         selectedComponents=[ZGTo2LG,
@@ -548,6 +548,10 @@ if analysis=='susy':
         
     elif int(group)==101:
         selectedComponents=[DYJetsToLL_M10to50, DYJetsToLL_M50,TTJets_DiLepton,TTJets_SingleLeptonFromT,TTJets_SingleLeptonFromTbar,TTJets_DiLepton_ext,TTJets_SingleLeptonFromT_ext,TTJets_SingleLeptonFromTbar_ext, WJetsToLNu]
+
+    elif int(group)==102:
+        selectedComponents=[GGHZZ4L,WWG,WWTo2L2Nu,VHToNonbb,WWW,tZW_ll,WZG,T_tch_powheg,TBar_tch_powheg,TTHnobb_pow]
+
 
     for c in selectedComponents:
         if c in [DYJetsToLL_M10to50, DYJetsToLL_M50,TTJets_DiLepton,TTJets_SingleLeptonFromT,TTJets_SingleLeptonFromTbar,TTJets_DiLepton_ext,TTJets_SingleLeptonFromT_ext,TTJets_SingleLeptonFromTbar_ext, WJetsToLNu]:
