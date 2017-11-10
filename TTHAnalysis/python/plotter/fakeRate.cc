@@ -699,7 +699,7 @@ float fakeRateWeight_3l(float l1fr, int l1pass, float l2fr, int l2pass, float l3
     float ret = -1.0f;
     if (!l1pass) ret *=  -l1fr/(1.0f-l1fr);
     if (!l2pass) ret *=  -l2fr/(1.0f-l2fr);
-    if (!l3pass) ret *=  -l2fr/(1.0f-l2fr);
+    if (!l3pass) ret *=  -l3fr/(1.0f-l3fr);
     if (ret == -1.0f) ret = 0.0f;
     return ret;
 }
@@ -1072,6 +1072,20 @@ float EWK3L_fakeTransfer(unsigned int nLep, float l1fr    , int l1isFake,
     if(l4isFake && nLep==4) weight *= -1*l4fr;
 
     return -1*weight;
+}
+
+float EWK3L_flipRate(float pt1, float eta1, int pdgId1, float pt2, float eta2, int pdgId2, float pt3, float eta3, int pdgId3) {
+    std::vector<int> lights;
+    int isTau = 0;
+    if(((abs(pdgId1)==15)+(abs(pdgId2)==15)+(abs(pdgId3)==15))>1) 
+        return 0;
+    if(abs(pdgId1)==15) 
+        return chargeFlipWeight_2lss(pt2, eta2, pdgId2, pt3, eta3, pdgId3);
+    if(abs(pdgId2)==15) 
+        return chargeFlipWeight_2lss(pt1, eta1, pdgId1, pt3, eta3, pdgId3);
+    if(abs(pdgId3)==15) 
+        return chargeFlipWeight_2lss(pt1, eta1, pdgId1, pt2, eta2, pdgId2);
+    return 0;
 }
 
 

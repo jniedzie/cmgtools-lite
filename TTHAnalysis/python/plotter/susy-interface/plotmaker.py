@@ -3,7 +3,7 @@ from lib import maker
 from lib import functions as func
 
 def collectMakes(region, make):
-	available = ["data", "sigs", "bkgs", "mix"]
+	available = ["data", "datasig", "sigs", "bkgs", "mix"]
 	mix       = ["all", "both"]
 	if not make in available and not make in mix: return []
 	if make in mix:
@@ -34,10 +34,11 @@ def collectProcesses(mm, make):
 		return add + procs
 	bkgs = " ".join(["-p "+b for b in mm.getBkgs()])
 	sigs = " ".join(["-p "+s for s in mm.getSigs()])
-	if make=="data": return "-p data "+bkgs
-	if make=="mix" : return "--showIndivSigs --noStackSig "+sigs+" "+bkgs
-	if make=="sigs": return "--emptyStack -p dummy --showIndivSigs --noStackSig "+sigs
-	if make=="bkgs": return bkgs
+	if make=="data"   : return "-p data "+bkgs
+	if make=="datasig": return "-p data "+bkgs+" --showIndivSigs --noStackSig "+sigs
+	if make=="mix"    : return "--showIndivSigs --noStackSig "+sigs+" "+bkgs
+	if make=="sigs"   : return "--emptyStack -p dummy --showIndivSigs --noStackSig "+sigs
+	if make=="bkgs"   : return bkgs
 	return ""
 	
 parser = OptionParser(usage="%prog cfg regions treedir outdir [options]")
@@ -47,21 +48,23 @@ parser.add_option("--plots",  dest="plots",   type="string", default="all", help
 parser.add_option("--selPlots", dest="customPlots", action="append", default=[], help="Bypass --plots option and give directly the name of the plots in the plotsfile")
 parser.add_option("--lspam", dest="lspam", type="string", default="Preliminary", help="Left-spam for CMS_lumi in mcPlots, either Preliminary, Simulation, Internal or nothing")
 parser.add_option("--noRatio", dest="ratio", action="store_false", default=True, help="Do NOT plot the ratio (i.e. give flag --showRatio)")
+parser.add_option("--dcc", dest="dcc", action="store_true", default=False, help="Run the double-count-checker after you have run all the plots.")
 
-base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} -P {T} --neg --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS} --showMCError -j 4"
+base = "python mcPlots.py {MCA} {CUTS} {PLOTFILE} {T} --s2v --tree {TREENAME} -f --cmsprel '{LSPAM}' --legendWidth 0.20 --legendFontSize 0.035 {MCCS} {MACROS} {RATIO} -l {LUMI} --pdir {O} {FRIENDS} {PROCS} {PLOTS} {FLAGS}"
+baseDcc = "python mcDump.py {MCA} {CUTS} '{run:1d} {lumi:9d} {evt:12d}' {T} --tree {TREENAME} {MCCS} {MACROS} {FRIENDS} {PROCS} {FLAGS}" 
 (options, args) = parser.parse_args()
 options = maker.splitLists(options)
 mm      = maker.Maker("plotmaker", base, args, options, parser.defaults)
 
 friends = mm.collectFriends()	
-mccs    = mm.collectMCCs   ()
-macros  = mm.collectMacros ()	
 sl      = mm.getVariable("lumi","12.9").replace(".","p")
 
 for r in range(len(mm.regions)):
 	mm.iterateRegion()
 
-	flags   = mm.collectFlags  ("flagsPlots")
+	mccs    = mm.collectMCCs  ()
+	macros  = mm.collectMacros()	
+	flags   = mm.collectFlags (["flagsPlots"])
 	ratio   = "--showRatio" if options.ratio else ""
 	
 	makes    = collectMakes(mm.region, options.make)
@@ -76,9 +79,21 @@ for r in range(len(mm.regions)):
 			procs   = collectProcesses(mm, m)
 			pplots  = collectPPlots   (mm, p, options.customPlots)
 
-			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("plotfile",""), mm.treedir, mm.getVariable("treename","treeProducerSusyMultilepton"), options.lspam, mccs, macros, ratio, mm.getVariable("lumi","12.9"), output, friends, procs, pplots, flags],mm.region.name+"_"+p+"_"+m,False)
+			mm.submit([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.getVariable("plotfile",""), mm.treedirs, mm.getVariable("treename","treeProducerSusyMultilepton"), options.lspam, mccs, macros, ratio, mm.getVariable("lumi","12.9"), output, friends, procs, pplots, flags],mm.region.name+"_"+p+"_"+m,False)
 
 mm.runJobs()
 mm.clearJobs()
+
+if options.dcc:
+	flags = mm.collectFlags ([])
+	mm.reloadBase(baseDcc)
+	base = mm.makeCmd([mm.getVariable("mcafile",""), mm.getVariable("cutfile",""), mm.treedirs, mm.getVariable("treename", "treeProducerSusyMultilepton"), mccs, macros, friends, procs, flags])
+	evtlist = sorted(filter(lambda x: x[0:1].isdigit(), filter(None, func.bashML(base))))
+	preceeding = ""
+	for entry in evtlist:
+		if entry == preceeding:
+			print "DOUBLE COUNTED: "+entry
+			continue
+		preceeding = entry
 
 
