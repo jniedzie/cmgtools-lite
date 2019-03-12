@@ -319,6 +319,9 @@ treeProducer = cfg.Analyzer(
     globalVariables = [
         NTupleVariable("rho",  lambda ev: ev.rho, float, help="kt6PFJets rho"),
         NTupleVariable("nVert",  lambda ev: len(ev.goodVertices), int, help="Number of good vertices"),
+        NTupleVariable("vertex_x",  lambda ev: ev.vx, float, help="Primary vertex x"),
+        NTupleVariable("vertex_y",  lambda ev: ev.vy, float, help="Primary vertex y"),
+        NTupleVariable("vertex_z",  lambda ev: ev.vz, float, help="Primary vertex z"),
 
         NTupleVariable("nJet30", lambda ev: sum([j.pt() > 30 for j in ev.cleanJets]), int, help="Number of jets with pt > 30, |eta|<2.4"),
         NTupleVariable("nJet30a", lambda ev: sum([j.pt() > 30 for j in ev.cleanJetsAll]), int, help="Number of jets with pt > 30, |eta|<4.7"),
